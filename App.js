@@ -1,89 +1,55 @@
-import React from 'react';
+import React from 'react'
 import { 
-  Platform,
-  Keyboard, 
-  TouchableWithoutFeedback, 
-  KeyboardAvoidingView, 
   View, 
-  StyleSheet, 
-  Text, 
-  TextInput 
-} from 'react-native';
+  StyleSheet,  
+  Button
+} from 'react-native'
+import Category from './Category'
+import conversions from './conversions'
 
 export default class App extends React.Component {
   state = {
-    convertType: 'Mass',
-    fromUnit: {name: 'lb', value: 453.59237},
-    baseUnit: {name: 'g', value: 1.0},
-    toUnit: {name: 'kg', value: 1000.0},
-    fromUnitValue: '',
-    toUnitValue: '',
+    showCategory: false,
+    conversion: conversions[0]
   }
 
-  onChangeFromUnitValue = fromUnitValue => {
-    if (+fromUnitValue >= 0) {this.setState({fromUnitValue})}
-    let result = (fromUnitValue * this.state.fromUnit.value) / this.state.toUnit.value 
-    this.state.toUnitValue = result.toString()
-  }
-
-  onChangeToUnitValue = toUnitValue => {
-    if (+toUnitValue >= 0) {this.setState({toUnitValue})}
-    let result = (toUnitValue * this.state.toUnit.value) / this.state.fromUnit.value 
-    this.state.fromUnitValue = result.toString()
+  toggleCategory = () => {
+    this.setState(prevState => ({showCategory: !prevState.showCategory}))
   }
 
   render() {
+    if (this.state.showCategory) return <Category onSubmit={this.toggleCategory} conversion={this.state.conversion}/>
     return (
-      <KeyboardAvoidingView
-        behavior={Platform.OS == "ios" ? "padding" : "height"}
-        style={styles.container}
-      >
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <View style={styles.inner}>
-            <Text style={styles.header}>{this.state.convertType}</Text>
-            <Text style={styles.text}>{this.state.fromUnit.name}</Text>
-            <TextInput
-              style={styles.textInput}
-              onChangeText={this.onChangeFromUnitValue}
-              value={this.state.fromUnitValue}
-              keyboardType="numeric"
-            />
-            <Text style={styles.text}>{this.state.toUnit.name}</Text>
-            <TextInput
-              style={styles.textInput}
-              onChangeText={this.onChangeToUnitValue}
-              value={this.state.toUnitValue}
-              keyboardType="numeric"
-            />
-          </View>
-        </TouchableWithoutFeedback>
-      </KeyboardAvoidingView>
+      <View style = {styles.inner}>
+        {conversions.map(conversion => (
+          <Button
+            title = {conversion.category}
+            onPress = {this.toggleCategory}
+          />
+        ))}
+      </View>
     )
   }
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
   },
   inner: {
-    padding: 24,
+    padding: 20,
     flex: 1,
-    justifyContent: "space-around"
+    justifyContent: "center"
   },
   header: {
-    fontSize: 36,
-    marginBottom: 48
+    fontSize: 24,
   },
   text: {
     fontSize: 16,
-    marginBottom: 40
   },
   textInput: {
-    fontSize: 24,
-    height: 50,
+    fontSize: 16,
     borderColor: "#000000",
-    borderBottomWidth: 1,
-    marginBottom: 20
+    borderWidth: 1,
   }
 });
