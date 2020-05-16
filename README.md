@@ -13,5 +13,4 @@ Clone the repo and run the following commands.
 ```
 npm install
 
-npm install "flow-bin@`grep "\^[0-9]\." .flowconfig | cut -c2-`"
 ```
