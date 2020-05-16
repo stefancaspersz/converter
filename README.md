@@ -1,10 +1,12 @@
 # converter app #
 
-
 ## Application code ##
 
-Application code is in `App.js` and any includes will be in the root of this repo.
+`conversions.js` contains the static Array of conversion unit data
 
+`App.js` main application navigation
+
+`Category.js` contains the user input and calculation
 
 ## Steps to Install ##
 
